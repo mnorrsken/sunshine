@@ -18,28 +18,17 @@
   </div>
 </template>
 
-<script>
-export default {
-  data() {
-    return {
-      latitude: '',
-      longitude: '',
-      daylightHours: null
-    }
-  },
-  methods: {
-    async getDaylight() {
-      try {
-        const response = await this.$axios.post('/api/daylight', {
-          latitude: this.latitude,
-          longitude: this.longitude
-        })
-        this.daylightHours = response.data.daylight_hours
-      } catch (error) {
-        console.error('Error fetching daylight hours:', error)
-      }
-    }
-  }
+<script setup>
+import { ref } from 'vue'
+import { useDaylightStore } from '~/stores/daylight'
+
+const daylightStore = useDaylightStore()
+const latitude = ref('')
+const longitude = ref('')
+const daylightHours = ref(null)
+
+async function getDaylight() {
+  daylightHours.value = await daylightStore.fetchDaylightHours(latitude.value, longitude.value)
 }
 </script>
 
