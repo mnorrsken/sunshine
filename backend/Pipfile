@@ -8,6 +8,7 @@ verify_ssl = true
 [packages]
 flask = "*"
 astral = "*"
+geopy = "*"
 
 [requires]
-python_version = "3.8"
+python_version = "3.12"

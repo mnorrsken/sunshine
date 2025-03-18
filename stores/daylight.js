@@ -3,7 +3,8 @@ import axios from 'axios'
 
 export const useDaylightStore = defineStore('daylight', {
   state: () => ({
-    daylightHours: null
+    daylightHours: null,
+    location: null
   }),
   actions: {
     async fetchDaylightHours(latitude, longitude) {
@@ -13,14 +14,20 @@ export const useDaylightStore = defineStore('daylight', {
           longitude
         })
         this.daylightHours = response.data.daylight_hours
-        return response.data.daylight_hours
+        this.location = response.data.location
+        
+        return {
+          daylightHours: response.data.daylight_hours,
+          location: response.data.location
+        }
       } catch (error) {
         console.error('Error fetching daylight hours:', error)
-        return null
+        return { daylightHours: null, location: null }
       }
     }
   },
   getters: {
-    getDaylightHours: (state) => state.daylightHours
+    getDaylightHours: (state) => state.daylightHours,
+    getLocation: (state) => state.location
   }
 })
